@@ -58,7 +58,10 @@ function Index() {
           >
             <Dashboard
               onOpen={setActiveLocation}
-              onLogout={() => { logout(); setAuthed(false); }}
+              onLogout={() => {
+                clearSupabaseConfig();
+                setHasConfig(false);
+              }}
               onResetConfig={() => {
                 if (confirm("Rozłączyć z Supabase i wyczyścić konfigurację?")) {
                   clearSupabaseConfig();

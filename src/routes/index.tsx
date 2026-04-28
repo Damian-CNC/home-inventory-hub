@@ -3,11 +3,9 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Toaster } from "@/components/ui/sonner";
 import { SupabaseSetup } from "@/components/SupabaseSetup";
-import { LockScreen } from "@/components/LockScreen";
 import { Dashboard } from "@/components/Dashboard";
 import { ItemsView } from "@/components/ItemsView";
 import { getSupabaseConfig, clearSupabaseConfig, Location } from "@/lib/supabaseClient";
-import { isAuthed, logout } from "@/lib/auth";
 
 export const Route = createFileRoute("/")({
   component: Index,

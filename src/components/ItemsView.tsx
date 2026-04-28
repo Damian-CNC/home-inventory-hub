@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { getSupabase, Item, ItemType, Location } from "@/lib/supabaseClient";
+import { ReloadButton } from "./ReloadButton";
 import { toast } from "sonner";
 
 type SortKey = "name" | "quantity" | "created_at";

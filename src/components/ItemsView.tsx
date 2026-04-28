@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { getSupabase, Item, ItemType, Location } from "@/lib/supabaseClient";
+import { ReloadButton } from "./ReloadButton";
 import { toast } from "sonner";
 
 type SortKey = "name" | "quantity" | "created_at";
@@ -112,6 +113,7 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
             <h1 className="text-lg font-semibold tracking-tight">{location.name}</h1>
             <p className="text-xs text-muted-foreground">{items.length} przedmiotów</p>
           </div>
+          <ReloadButton />
           <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm(); }}>
             <DialogTrigger asChild>
               <Button size="sm"><Plus className="w-4 h-4 mr-1" /> Dodaj</Button>

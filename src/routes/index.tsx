@@ -22,6 +22,11 @@ function Index() {
     setMounted(true);
   }, []);
 
+  // Scroll to top on view change (Dashboard <-> ItemsView) and on config screen toggle
+  useEffect(() => {
+    if (typeof window !== "undefined") window.scrollTo(0, 0);
+  }, [activeLocation?.id, hasConfig]);
+
   if (!mounted) {
     return <div className="min-h-screen bg-background" />;
   }

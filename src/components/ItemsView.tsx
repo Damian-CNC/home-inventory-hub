@@ -78,6 +78,7 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
     const { error } = await sb.from("items").insert(payload);
     if (error) return toast.error(error.message);
     toast.success("Dodano przedmiot");
+    invalidateNameCache();
     setOpen(false); resetForm(); load();
   };
 

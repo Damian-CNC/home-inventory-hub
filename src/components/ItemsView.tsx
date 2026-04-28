@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowLeft, Plus, Search, Trash2, Loader2, Tag, ArrowUpDown,
+  ArrowLeft, Plus, Search, Trash2, Loader2, Tag, ArrowUpDown, Pencil,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

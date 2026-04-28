@@ -24,24 +24,32 @@ function Index() {
 
   // Scroll to top on view change (Dashboard <-> ItemsView) and on config screen toggle
   useEffect(() => {
-    if (typeof window !== "undefined") window.scrollTo(0, 0);
+    if (typeof window === "undefined") return;
+
+    const timeout = window.setTimeout(() => {
+      window.scrollTo(0, 0);
+      const container = document.getElementById("main-scroll-container");
+      if (container) container.scrollTo(0, 0);
+    }, 50);
+
+    return () => window.clearTimeout(timeout);
   }, [activeLocation?.id, hasConfig]);
 
   if (!mounted) {
-    return <div className="min-h-screen bg-background" />;
+    return <div id="main-scroll-container" className="h-screen overflow-y-auto bg-background" />;
   }
 
   if (!hasConfig) {
     return (
-      <>
+      <div id="main-scroll-container" className="h-screen overflow-y-auto bg-background">
         <SupabaseSetup onReady={() => setHasConfig(true)} />
         <Toaster theme="dark" />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div id="main-scroll-container" className="h-screen overflow-y-auto bg-background">
       <AnimatePresence mode="wait">
         {activeLocation ? (
           <motion.div
@@ -78,6 +86,6 @@ function Index() {
         )}
       </AnimatePresence>
       <Toaster theme="dark" />
-    </>
+    </div>
   );
 }

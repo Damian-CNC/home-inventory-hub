@@ -113,6 +113,7 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
             <h1 className="text-lg font-semibold tracking-tight">{location.name}</h1>
             <p className="text-xs text-muted-foreground">{items.length} przedmiotów</p>
           </div>
+          <ReloadButton />
           <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm(); }}>
             <DialogTrigger asChild>
               <Button size="sm"><Plus className="w-4 h-4 mr-1" /> Dodaj</Button>

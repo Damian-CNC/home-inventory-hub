@@ -14,9 +14,21 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [hasConfig, setHasConfig] = useState(() => !!getSupabaseConfig());
-  const [authed, setAuthed] = useState(() => isAuthed());
+  // Lazy state — w SSR getSupabaseConfig zwraca null, hydratujemy po mount
+  const [mounted, setMounted] = useState(false);
+  const [hasConfig, setHasConfig] = useState(false);
+  const [authed, setAuthed] = useState(false);
   const [activeLocation, setActiveLocation] = useState<Location | null>(null);
+
+  useEffect(() => {
+    setHasConfig(!!getSupabaseConfig());
+    setAuthed(isAuthed());
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-background" />;
+  }
 
   if (!hasConfig) {
     return (

@@ -126,7 +126,7 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
               <div className="space-y-4 py-2">
                 <div className="space-y-2">
                   <Label>Nazwa</Label>
-                  <Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+                  <NameAutocomplete value={name} onChange={setName} autoFocus />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">

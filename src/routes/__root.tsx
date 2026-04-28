@@ -32,11 +32,15 @@ export const Route = createRootRoute({
       { title: "Home Organizer — Domowa inwentaryzacja" },
       { name: "description", content: "Prywatna aplikacja do inwentaryzacji domu: lokacje, przedmioty, śledzenie zapasów." },
       { name: "author", content: "Home Organizer" },
-      { property: "og:title", content: "Home Organizer" },
-      { property: "og:description", content: "Prywatna aplikacja do inwentaryzacji domu." },
+      { property: "og:title", content: "Home Organizer — Domowa inwentaryzacja" },
+      { property: "og:description", content: "Prywatna aplikacja do inwentaryzacji domu: lokacje, przedmioty, śledzenie zapasów." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Home Organizer — Domowa inwentaryzacja" },
+      { name: "twitter:description", content: "Prywatna aplikacja do inwentaryzacji domu: lokacje, przedmioty, śledzenie zapasów." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/23c7d83d-a603-43e6-a8df-05b72ece7051" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/23c7d83d-a603-43e6-a8df-05b72ece7051" },
     ],
     links: [
       {

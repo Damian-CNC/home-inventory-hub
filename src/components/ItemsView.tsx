@@ -95,6 +95,7 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
     setItems((prev) => prev.map((i) => i.id === id ? { ...i, ...patch } as Item : i));
     const { error } = await sb.from("items").update(patch).eq("id", id);
     if (error) { toast.error(error.message); load(); return false; }
+    invalidateNameCache();
     toast.success("Zapisano zmiany");
     return true;
   };

@@ -287,7 +287,7 @@ function ItemRow({
             <div className="space-y-4 py-2">
               <div className="space-y-2">
                 <Label>Nazwa</Label>
-                <Input value={eName} onChange={(e) => setEName(e.target.value)} autoFocus />
+                <NameAutocomplete value={eName} onChange={setEName} autoFocus />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">

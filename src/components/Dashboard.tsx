@@ -8,6 +8,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter,
 } from "@/components/ui/dialog";
 import { Icon, ICON_NAMES } from "./Icon";
+import { ReloadButton } from "./ReloadButton";
 import { getSupabase, Location } from "@/lib/supabaseClient";
 import { toast } from "sonner";
 

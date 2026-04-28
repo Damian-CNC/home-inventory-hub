@@ -15,6 +15,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { getSupabase, Item, ItemType, Location } from "@/lib/supabaseClient";
 import { ReloadButton } from "./ReloadButton";
+import { NameAutocomplete, invalidateNameCache } from "./NameAutocomplete";
 import { toast } from "sonner";
 
 type SortKey = "name" | "quantity" | "created_at";
@@ -77,6 +78,7 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
     const { error } = await sb.from("items").insert(payload);
     if (error) return toast.error(error.message);
     toast.success("Dodano przedmiot");
+    invalidateNameCache();
     setOpen(false); resetForm(); load();
   };
 
@@ -93,6 +95,7 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
     setItems((prev) => prev.map((i) => i.id === id ? { ...i, ...patch } as Item : i));
     const { error } = await sb.from("items").update(patch).eq("id", id);
     if (error) { toast.error(error.message); load(); return false; }
+    invalidateNameCache();
     toast.success("Zapisano zmiany");
     return true;
   };
@@ -123,7 +126,7 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
               <div className="space-y-4 py-2">
                 <div className="space-y-2">
                   <Label>Nazwa</Label>
-                  <Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+                  <NameAutocomplete value={name} onChange={setName} autoFocus />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">
@@ -284,7 +287,7 @@ function ItemRow({
             <div className="space-y-4 py-2">
               <div className="space-y-2">
                 <Label>Nazwa</Label>
-                <Input value={eName} onChange={(e) => setEName(e.target.value)} autoFocus />
+                <NameAutocomplete value={eName} onChange={setEName} autoFocus />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">

@@ -87,6 +87,15 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
     if (error) { toast.error(error.message); load(); }
   };
 
+  const saveEdit = async (id: string, patch: Partial<Item>) => {
+    const sb = getSupabase()!;
+    setItems((prev) => prev.map((i) => i.id === id ? { ...i, ...patch } as Item : i));
+    const { error } = await sb.from("items").update(patch).eq("id", id);
+    if (error) { toast.error(error.message); load(); return false; }
+    toast.success("Zapisano zmiany");
+    return true;
+  };
+
   const remove = async (id: string) => {
     const sb = getSupabase()!;
     setItems((prev) => prev.filter((i) => i.id !== id));

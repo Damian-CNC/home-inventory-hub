@@ -198,12 +198,42 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
 }
 
 function ItemRow({
-  item, onUpdate, onRemove,
+  item, onUpdate, onRemove, onSaveEdit,
 }: {
   item: Item;
   onUpdate: (i: Item, q: number) => void;
   onRemove: (id: string) => void;
+  onSaveEdit: (id: string, patch: Partial<Item>) => Promise<boolean>;
 }) {
+  const [editOpen, setEditOpen] = useState(false);
+  const [eName, setEName] = useState(item.name);
+  const [eQty, setEQty] = useState(String(item.quantity));
+  const [eCap, setECap] = useState(item.total_capacity ? String(item.total_capacity) : "");
+  const [eUnit, setEUnit] = useState(item.unit);
+  const [saving, setSaving] = useState(false);
+
+  const openEdit = () => {
+    setEName(item.name);
+    setEQty(String(item.quantity));
+    setECap(item.total_capacity ? String(item.total_capacity) : "");
+    setEUnit(item.unit);
+    setEditOpen(true);
+  };
+
+  const handleSave = async () => {
+    if (!eName.trim() || eQty === "") return;
+    setSaving(true);
+    const patch: Partial<Item> = {
+      name: eName.trim(),
+      quantity: Number(eQty),
+      unit: eUnit || item.unit,
+      total_capacity: eCap ? Number(eCap) : null,
+    };
+    const ok = await onSaveEdit(item.id, patch);
+    setSaving(false);
+    if (ok) setEditOpen(false);
+  };
+
   return (
     <motion.li
       layout
@@ -231,10 +261,68 @@ function ItemRow({
             </div>
           )}
         </div>
-        <Button variant="ghost" size="icon" onClick={() => onRemove(item.id)} className="text-muted-foreground hover:text-destructive">
-          <Trash2 className="w-4 h-4" />
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="icon" onClick={openEdit} className="text-muted-foreground hover:text-foreground">
+            <Pencil className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={() => onRemove(item.id)} className="text-muted-foreground hover:text-destructive">
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
+
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent asChild>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 8 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+          >
+            <DialogHeader><DialogTitle>Edytuj: {item.name}</DialogTitle></DialogHeader>
+            <div className="space-y-4 py-2">
+              <div className="space-y-2">
+                <Label>Nazwa</Label>
+                <Input value={eName} onChange={(e) => setEName(e.target.value)} autoFocus />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Aktualna ilość</Label>
+                  <Input type="number" value={eQty} onChange={(e) => setEQty(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Jednostka</Label>
+                  <Select value={eUnit} onValueChange={setEUnit}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="szt">szt</SelectItem>
+                      <SelectItem value="ml">ml</SelectItem>
+                      <SelectItem value="l">l</SelectItem>
+                      <SelectItem value="g">g</SelectItem>
+                      <SelectItem value="kg">kg</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Całkowita pojemność (puste = brak pasków)</Label>
+                <Input
+                  type="number"
+                  value={eCap}
+                  onChange={(e) => setECap(e.target.value)}
+                  placeholder="np. 1000"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setEditOpen(false)}>Anuluj</Button>
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Zapisz"}
+              </Button>
+            </DialogFooter>
+          </motion.div>
+        </DialogContent>
+      </Dialog>
 
       {item.type === "liquid" && item.total_capacity && (
         <CapacityBars current={item.quantity} total={item.total_capacity} />

@@ -184,7 +184,7 @@ export function ItemsView({ location, onBack }: { location: Location; onBack: ()
           <motion.ul layout className="space-y-3">
             <AnimatePresence>
               {filtered.map((item) => (
-                <ItemRow key={item.id} item={item} onUpdate={updateQty} onRemove={remove} />
+                <ItemRow key={item.id} item={item} onUpdate={updateQty} onRemove={remove} onSaveEdit={saveEdit} />
               ))}
             </AnimatePresence>
             {filtered.length === 0 && (
